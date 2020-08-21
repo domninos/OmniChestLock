@@ -1,0 +1,4 @@
+lockedChests:
+  Ninety:
+    location: 'world,0,150,0'
+    users: []
