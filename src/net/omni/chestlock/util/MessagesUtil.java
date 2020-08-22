@@ -31,6 +31,7 @@ public class MessagesUtil {
     private String onlyChest;
     private String cantOpenChest;
     private String staffOpen;
+    private String playerNotMember;
 
     public MessagesUtil(ChestLockPlugin plugin) {
         this.plugin = plugin;
@@ -65,6 +66,7 @@ public class MessagesUtil {
         this.onlyChest = plugin.translate(getString("onlyChest"));
         this.cantOpenChest = plugin.translate(getString("cantOpenChest"));
         this.staffOpen = plugin.translate(getString("staffOpen"));
+        this.playerNotMember = plugin.translate(getString("playerNotMember"));
     }
 
     public String getPrefix() {
@@ -161,6 +163,10 @@ public class MessagesUtil {
 
     public String getStaffOpen() {
         return staffOpen;
+    }
+
+    public String getPlayerNotMember() {
+        return playerNotMember;
     }
 
     private String getString(String path) {

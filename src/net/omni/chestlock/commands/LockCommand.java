@@ -45,7 +45,7 @@ public class LockCommand implements CommandExecutor {
             if (args[0].equalsIgnoreCase("add"))
                 plugin.sendMessage(player, "&cUsage: /lock add <player>");
             else if (args[0].equalsIgnoreCase("remove"))
-                plugin.sendMessage(player, "&cUsage: /lock rmeove <player>");
+                plugin.sendMessage(player, "&cUsage: /lock remove <player>");
             else if (args[0].equalsIgnoreCase("list")) {
                 if (plugin.getPlayerUtil().isChecking(player.getName())) {
                     plugin.getPlayerUtil().removeChecking(player.getName());
@@ -83,12 +83,12 @@ public class LockCommand implements CommandExecutor {
                 plugin.getLockedChestsManager().addPlayer(targetBlock.getLocation(), target.getName());
                 plugin.sendMessage(player, plugin.getMessagesUtil().getAddedPlayer(target.getName()));
             } else if (args[0].equalsIgnoreCase("remove")) {
-                Player target = Bukkit.getPlayer(args[1]);
+                String toRemove = args[1];
+                Player target = Bukkit.getPlayer(toRemove);
+                boolean found = true;
 
-                if (target == null) {
-                    plugin.sendMessage(player, plugin.getMessagesUtil().getPlayerNotFound());
-                    return true;
-                }
+                if (target == null)
+                    found = false;
 
                 Block targetBlock = player.getTargetBlock(null, 5);
 
@@ -102,8 +102,22 @@ public class LockCommand implements CommandExecutor {
                     return true;
                 }
 
-                plugin.getLockedChestsManager().removePlayer(targetBlock.getLocation(), target.getName());
-                plugin.sendMessage(player, plugin.getMessagesUtil().getRemovedPlayer(target.getName()));
+                if (!plugin.getLockedChestsManager().isOwner(targetBlock.getLocation(), player.getName())) {
+                    plugin.sendMessage(player, plugin.getMessagesUtil().getOwnerOnlyUnlock());
+                    return true;
+                }
+
+                if (found)
+                    toRemove = target.getName();
+
+                if (!plugin.getLockedChestsManager().isPlayer(targetBlock.getLocation(), toRemove)
+                        || plugin.getLockedChestsManager().isOwner(targetBlock.getLocation(), toRemove)) {
+                    plugin.sendMessage(player, plugin.getMessagesUtil().getPlayerNotMember());
+                    return true;
+                }
+
+                plugin.getLockedChestsManager().removePlayer(targetBlock.getLocation(), toRemove);
+                plugin.sendMessage(player, plugin.getMessagesUtil().getRemovedPlayer(toRemove));
             } else
                 plugin.sendMessage(player, "&cUsage: /lock <add|remove> <player>");
 

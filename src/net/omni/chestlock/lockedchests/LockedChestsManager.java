@@ -190,18 +190,23 @@ public class LockedChestsManager {
     }
 
     public void flush() {
+        List<String> players = new ArrayList<>();
+
         for (LockedChest lockedChest : lockedChests) {
             if (lockedChest == null)
                 continue;
 
+            players.clear();
+            players.addAll(lockedChest.getPlayers());
+
             plugin.getLockedChestsConfig().setNoSave("lockedChests." + lockedChest.getOwner() + ".users",
-                    new ArrayList<>(lockedChest.getPlayers()));
+                    players);
 
             lockedChest.flush();
         }
 
         plugin.getLockedChestsConfig().save();
-
+        players.clear();
         lockedChests.clear();
     }
 }

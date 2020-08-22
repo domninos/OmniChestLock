@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 public class PlayerListener implements Listener {
@@ -69,7 +70,8 @@ public class PlayerListener implements Listener {
                 return;
             }
 
-            plugin.getLockedChestsManager().createLockedChest(location, player.getName());
+            plugin.getPlayerUtil().removeLocking(name);
+            plugin.getLockedChestsManager().createLockedChest(location, name);
             plugin.sendMessage(player, plugin.getMessagesUtil().getLocked());
         } else if (plugin.getPlayerUtil().isUnlocking(name)) {
             event.setCancelled(true);
@@ -88,12 +90,13 @@ public class PlayerListener implements Listener {
                 return;
             }
 
-            if (!plugin.getLockedChestsManager().isOwner(location, player.getName())) {
+            if (!plugin.getLockedChestsManager().isOwner(location, name)) {
                 plugin.sendMessage(player, plugin.getMessagesUtil().getOwnerOnlyUnlock());
                 return;
             }
 
-            plugin.getLockedChestsManager().unlockChest(location, player.getName());
+            plugin.getPlayerUtil().removeUnlocking(name);
+            plugin.getLockedChestsManager().unlockChest(location, name);
             plugin.sendMessage(player, plugin.getMessagesUtil().getUnlocked());
         } else if (plugin.getPlayerUtil().isChecking(name)) {
             event.setCancelled(true);
@@ -110,6 +113,24 @@ public class PlayerListener implements Listener {
                     plugin.getMessagesUtil().getCheckFormat(lockedChest.getX(),
                             lockedChest.getY(), lockedChest.getZ(), lockedChest.getOwner(),
                             StringUtils.join(lockedChest.getPlayers(), ", ")));
+            plugin.getPlayerUtil().removeChecking(name);
+            plugin.sendMessage(player, plugin.getMessagesUtil().getStoppedChecking());
+        }
+    }
+
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent event) {
+        Block block = event.getBlock();
+        Player player = event.getPlayer();
+
+        if (plugin.getLockedChestsManager().isLockedChest(block.getLocation())) {
+            if (plugin.getLockedChestsManager().isOwner(block.getLocation(), player.getName())) {
+                plugin.getLockedChestsManager().unlockChest(block.getLocation(), player.getName());
+                plugin.sendMessage(player, plugin.getMessagesUtil().getUnlocked());
+            } else {
+                event.setCancelled(true);
+                plugin.sendMessage(player, plugin.getMessagesUtil().getOwnerOnlyUnlock());
+            }
         }
     }
 

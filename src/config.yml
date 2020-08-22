@@ -25,3 +25,4 @@ messages:
   onlyChest: '&cBlock is not a chest.'
   cantOpenChest: '&cYou cannot open this locked chest.'
   staffOpen: '&aOpened chest with staff perms...'
+  playerNotMember: '&aThat player is not a member of this chest.'
