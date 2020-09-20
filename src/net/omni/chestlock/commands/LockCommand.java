@@ -32,14 +32,28 @@ public class LockCommand implements CommandExecutor {
                 return true;
             }
 
-            if (plugin.getPlayerUtil().isLocking(player.getName())) {
-                plugin.getPlayerUtil().removeLocking(player.getName());
-                plugin.sendMessage(player, plugin.getMessagesUtil().getStoppedLocking());
+            Block lookingAt = player.getTargetBlock(null, 5);
+
+            if (lookingAt.getType() != Material.CHEST) {
+                plugin.sendMessage(player, "&cChest not found.");
                 return true;
             }
 
-            plugin.getPlayerUtil().addLocking(player.getName());
-            plugin.sendMessage(player, plugin.getMessagesUtil().getLocking());
+            if (plugin.getWorldGuardUtil().isHooked()) {
+                if (!plugin.getWorldGuardUtil().isMember(player, lookingAt.getLocation())
+                        && !plugin.getWorldGuardUtil().isOwner(player, lookingAt.getLocation())) {
+                    plugin.sendMessage(player, plugin.getMessagesUtil().getMemberOnlyLock());
+                    return true;
+                }
+            }
+
+            if (plugin.getLockedChestsManager().isLockedChest(lookingAt.getLocation())) {
+                plugin.sendMessage(player, plugin.getMessagesUtil().getAlreadyLocked());
+                return true;
+            }
+
+            plugin.getLockedChestsManager().createLockedChest(lookingAt.getLocation(), player.getName());
+            plugin.sendMessage(player, plugin.getMessagesUtil().getLocked());
             return true;
         } else if (args.length == 1) {
             if (args[0].equalsIgnoreCase("add"))

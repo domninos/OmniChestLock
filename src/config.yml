@@ -2,8 +2,6 @@ messages:
   prefix: '&7[&3ChestLock&7]'
   playerOnly: '&cOnly players can use this command.'
   playerNotFound: '&cPlayer not found.'
-  locking: '&aYou can now lock chests.'
-  stoppedLocking: '&aYou have successfully stopped locking.'
   unlocking: '&aYou can now unlock chests.'
   stoppedUnlocking: '&aYou have successfully stopped unlocking.'
   checking: '&aYou can now check the list of players.'

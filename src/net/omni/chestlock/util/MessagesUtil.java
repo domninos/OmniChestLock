@@ -11,8 +11,6 @@ public class MessagesUtil {
     private String prefix;
     private String playerOnly;
     private String playerNotFound;
-    private String locking;
-    private String stoppedLocking;
     private String unlocking;
     private String stoppedUnlocking;
     private String checking;
@@ -43,8 +41,6 @@ public class MessagesUtil {
         this.prefix = plugin.translate(getString("prefix"));
         this.playerOnly = plugin.translate(getString("playerOnly"));
         this.playerNotFound = plugin.translate(getString("playerNotFound"));
-        this.locking = plugin.translate(getString("locking"));
-        this.stoppedLocking = plugin.translate(getString("stoppedLocking"));
         this.unlocking = plugin.translate(getString("unlocking"));
         this.stoppedUnlocking = plugin.translate(getString("stoppedUnlocking"));
         this.checking = plugin.translate(getString("checking"));
@@ -79,14 +75,6 @@ public class MessagesUtil {
 
     public String getPlayerNotFound() {
         return playerNotFound;
-    }
-
-    public String getLocking() {
-        return locking;
-    }
-
-    public String getStoppedLocking() {
-        return stoppedLocking;
     }
 
     public String getUnlocking() {

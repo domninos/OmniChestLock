@@ -28,11 +28,6 @@ public class UnlockCommand implements CommandExecutor {
             return true;
         }
 
-        if (plugin.getPlayerUtil().isLocking(player.getName())) {
-            plugin.sendMessage(player, plugin.getMessagesUtil().getNeedTurningOff("lock"));
-            return true;
-        }
-
         if (plugin.getPlayerUtil().isUnlocking(player.getName())) {
             plugin.getPlayerUtil().removeUnlocking(player.getName());
             plugin.sendMessage(player, plugin.getMessagesUtil().getStoppedUnlocking());

@@ -53,26 +53,6 @@ public class PlayerListener implements Listener {
                 }
             } else
                 plugin.sendMessage(player, plugin.getMessagesUtil().getStaffOpen());
-        } else if (plugin.getPlayerUtil().isLocking(name)) {
-            event.setCancelled(true);
-            player.closeInventory();
-
-            if (plugin.getWorldGuardUtil().isHooked()) {
-                if (!plugin.getWorldGuardUtil().isMember(player, block.getLocation())
-                        && !plugin.getWorldGuardUtil().isOwner(player, block.getLocation())) {
-                    plugin.sendMessage(player, plugin.getMessagesUtil().getMemberOnlyLock());
-                    return;
-                }
-            }
-
-            if (plugin.getLockedChestsManager().isLockedChest(location)) {
-                plugin.sendMessage(player, plugin.getMessagesUtil().getAlreadyLocked());
-                return;
-            }
-
-            plugin.getPlayerUtil().removeLocking(name);
-            plugin.getLockedChestsManager().createLockedChest(location, name);
-            plugin.sendMessage(player, plugin.getMessagesUtil().getLocked());
         } else if (plugin.getPlayerUtil().isUnlocking(name)) {
             event.setCancelled(true);
             player.closeInventory();
