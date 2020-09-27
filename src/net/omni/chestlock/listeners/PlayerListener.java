@@ -45,9 +45,7 @@ public class PlayerListener implements Listener {
         String name = player.getName();
 
         if (plugin.getLockedChestsManager().isLockedChest(location)) {
-            if (player.isOp())
-                plugin.sendMessage(player, plugin.getMessagesUtil().getCannotOpenOp());
-            else if (!player.hasPermission("chestlock.bypass")) { // no staff perms
+            if (!player.hasPermission("chestlock.bypass")) { // no staff perms
                 if (!plugin.getLockedChestsManager().isPlayer(location, player.getName())
                         && !plugin.getLockedChestsManager().isOwner(location, player.getName())) {
                     event.setCancelled(true);
@@ -84,13 +82,7 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
 
         if (plugin.getLockedChestsManager().isLockedChest(block.getLocation())) {
-            if (player.isOp()) {
-                event.setCancelled(true);
-                plugin.sendMessage(player, plugin.getMessagesUtil().getCannotBreakOp());
-                return;
-            }
-
-            if (plugin.getLockedChestsManager().isOwner(block.getLocation(), player.getName())
+            if (player.isOp() || plugin.getLockedChestsManager().isOwner(block.getLocation(), player.getName())
                     || plugin.getLockedChestsManager().isPlayer(block.getLocation(), player.getName())) {
                 plugin.getLockedChestsManager().unlockChest(block.getLocation(), player.getName());
                 plugin.sendMessage(player, plugin.getMessagesUtil().getUnlocked());
