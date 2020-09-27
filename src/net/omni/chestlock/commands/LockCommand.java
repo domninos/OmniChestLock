@@ -27,11 +27,6 @@ public class LockCommand implements CommandExecutor {
         Player player = (Player) sender;
 
         if (args.length == 0) {
-            if (plugin.getPlayerUtil().isUnlocking(player.getName())) {
-                plugin.sendMessage(player, plugin.getMessagesUtil().getNeedTurningOff("unlock"));
-                return true;
-            }
-
             Block lookingAt = player.getTargetBlock(null, 5);
 
             if (lookingAt.getType() != Material.CHEST) {

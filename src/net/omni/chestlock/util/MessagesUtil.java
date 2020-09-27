@@ -11,8 +11,6 @@ public class MessagesUtil {
     private String prefix;
     private String playerOnly;
     private String playerNotFound;
-    private String unlocking;
-    private String stoppedUnlocking;
     private String checking;
     private String stoppedChecking;
     private String needTurningOff;
@@ -20,7 +18,6 @@ public class MessagesUtil {
     private String locked;
     private String unlocked;
     private String memberOnlyLock;
-    private String memberOnlyUnlock;
     private String ownerOnlyUnlock;
     private String notLocked;
     private String checkFormat;
@@ -30,6 +27,8 @@ public class MessagesUtil {
     private String cantOpenChest;
     private String staffOpen;
     private String playerNotMember;
+    private String cannotOpenOp;
+    private String cannotBreakOp;
 
     public MessagesUtil(ChestLockPlugin plugin) {
         this.plugin = plugin;
@@ -41,8 +40,6 @@ public class MessagesUtil {
         this.prefix = plugin.translate(getString("prefix"));
         this.playerOnly = plugin.translate(getString("playerOnly"));
         this.playerNotFound = plugin.translate(getString("playerNotFound"));
-        this.unlocking = plugin.translate(getString("unlocking"));
-        this.stoppedUnlocking = plugin.translate(getString("stoppedUnlocking"));
         this.checking = plugin.translate(getString("checking"));
         this.stoppedChecking = plugin.translate(getString("stoppedChecking"));
         this.needTurningOff = plugin.translate(getString("needTurningOff"));
@@ -50,7 +47,6 @@ public class MessagesUtil {
         this.locked = plugin.translate(getString("locked"));
         this.unlocked = plugin.translate(getString("unlocked"));
         this.memberOnlyLock = plugin.translate(getString("memberOnlyLock"));
-        this.memberOnlyUnlock = plugin.translate(getString("memberOnlyUnlock"));
         this.ownerOnlyUnlock = plugin.translate(getString("ownerOnlyUnlock"));
         this.notLocked = plugin.translate(getString("notLocked"));
 
@@ -63,6 +59,8 @@ public class MessagesUtil {
         this.cantOpenChest = plugin.translate(getString("cantOpenChest"));
         this.staffOpen = plugin.translate(getString("staffOpen"));
         this.playerNotMember = plugin.translate(getString("playerNotMember"));
+        this.cannotOpenOp = plugin.translate(getString("cannotOpenOp"));
+        this.cannotBreakOp = plugin.translate(getString("cannotBreakOp"));
     }
 
     public String getPrefix() {
@@ -75,14 +73,6 @@ public class MessagesUtil {
 
     public String getPlayerNotFound() {
         return playerNotFound;
-    }
-
-    public String getUnlocking() {
-        return unlocking;
-    }
-
-    public String getStoppedUnlocking() {
-        return stoppedUnlocking;
     }
 
     public String getChecking() {
@@ -111,10 +101,6 @@ public class MessagesUtil {
 
     public String getMemberOnlyLock() {
         return memberOnlyLock;
-    }
-
-    public String getMemberOnlyUnlock() {
-        return memberOnlyUnlock;
     }
 
     public String getOwnerOnlyUnlock() {
@@ -159,5 +145,13 @@ public class MessagesUtil {
 
     private String getString(String path) {
         return plugin.getConfig().getString("messages." + path);
+    }
+
+    public String getCannotOpenOp() {
+        return cannotOpenOp;
+    }
+
+    public String getCannotBreakOp() {
+        return cannotBreakOp;
     }
 }

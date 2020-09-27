@@ -14,6 +14,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 public class PlayerListener implements Listener {
 
@@ -44,7 +45,9 @@ public class PlayerListener implements Listener {
         String name = player.getName();
 
         if (plugin.getLockedChestsManager().isLockedChest(location)) {
-            if (!player.hasPermission("chestlock.bypass")) {
+            if (player.isOp())
+                plugin.sendMessage(player, plugin.getMessagesUtil().getCannotOpenOp());
+            else if (!player.hasPermission("chestlock.bypass")) { // no staff perms
                 if (!plugin.getLockedChestsManager().isPlayer(location, player.getName())
                         && !plugin.getLockedChestsManager().isOwner(location, player.getName())) {
                     event.setCancelled(true);
@@ -53,32 +56,9 @@ public class PlayerListener implements Listener {
                 }
             } else
                 plugin.sendMessage(player, plugin.getMessagesUtil().getStaffOpen());
-        } else if (plugin.getPlayerUtil().isUnlocking(name)) {
-            event.setCancelled(true);
-            player.closeInventory();
+        }
 
-            if (plugin.getWorldGuardUtil().isHooked()) {
-                if (!plugin.getWorldGuardUtil().isMember(player, block.getLocation())
-                        && !plugin.getWorldGuardUtil().isOwner(player, block.getLocation())) {
-                    plugin.sendMessage(player, plugin.getMessagesUtil().getMemberOnlyUnlock());
-                    return;
-                }
-            }
-
-            if (!plugin.getLockedChestsManager().isLockedChest(location)) {
-                plugin.sendMessage(player, plugin.getMessagesUtil().getNotLocked());
-                return;
-            }
-
-            if (!plugin.getLockedChestsManager().isOwner(location, name)) {
-                plugin.sendMessage(player, plugin.getMessagesUtil().getOwnerOnlyUnlock());
-                return;
-            }
-
-            plugin.getPlayerUtil().removeUnlocking(name);
-            plugin.getLockedChestsManager().unlockChest(location, name);
-            plugin.sendMessage(player, plugin.getMessagesUtil().getUnlocked());
-        } else if (plugin.getPlayerUtil().isChecking(name)) {
+        if (plugin.getPlayerUtil().isChecking(name)) {
             event.setCancelled(true);
             player.closeInventory();
 
@@ -104,7 +84,14 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
 
         if (plugin.getLockedChestsManager().isLockedChest(block.getLocation())) {
-            if (plugin.getLockedChestsManager().isOwner(block.getLocation(), player.getName())) {
+            if (player.isOp()) {
+                event.setCancelled(true);
+                plugin.sendMessage(player, plugin.getMessagesUtil().getCannotBreakOp());
+                return;
+            }
+
+            if (plugin.getLockedChestsManager().isOwner(block.getLocation(), player.getName())
+                    || plugin.getLockedChestsManager().isPlayer(block.getLocation(), player.getName())) {
                 plugin.getLockedChestsManager().unlockChest(block.getLocation(), player.getName());
                 plugin.sendMessage(player, plugin.getMessagesUtil().getUnlocked());
             } else {
@@ -112,6 +99,14 @@ public class PlayerListener implements Listener {
                 plugin.sendMessage(player, plugin.getMessagesUtil().getOwnerOnlyUnlock());
             }
         }
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+
+        if (plugin.getPlayerUtil().isChecking(player.getName()))
+            plugin.getPlayerUtil().removeChecking(player.getName());
     }
 
     public void register() {

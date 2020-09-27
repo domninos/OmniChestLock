@@ -2,8 +2,6 @@ messages:
   prefix: '&7[&3ChestLock&7]'
   playerOnly: '&cOnly players can use this command.'
   playerNotFound: '&cPlayer not found.'
-  unlocking: '&aYou can now unlock chests.'
-  stoppedUnlocking: '&aYou have successfully stopped unlocking.'
   checking: '&aYou can now check the list of players.'
   stoppedChecking: '&aYou have successfully stopped checking for players.'
   needTurningOff: '&aYou need to turn off %command% before using this command.'
@@ -11,7 +9,6 @@ messages:
   locked: '&aSuccessfully locked chest.'
   unlocked: '&aSuccessfully unlocked chest.'
   memberOnlyLock: '&aOnly members or owners of this region can lock this chest.'
-  memberOnlyUnlock: '&aOnly members or owners of this region can unlock this chest.'
   ownerOnlyUnlock: '&cOnly the owner of this chest can unlock this chest.'
   notLocked: '&cThis chest is not locked.'
   checkFormat:
@@ -24,3 +21,5 @@ messages:
   cantOpenChest: '&cYou cannot open this locked chest.'
   staffOpen: '&aOpened chest with staff perms...'
   playerNotMember: '&aThat player is not a member of this chest.'
+  cannotOpenOp: '&cOPs cannot open locked chests.'
+  cannotBreakOp: '&cOPs cannot break locked chests.'

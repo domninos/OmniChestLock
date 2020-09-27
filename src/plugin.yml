@@ -9,5 +9,3 @@ description: A plugin to chest locks. (WorldGuard support)
 commands:
   lock:
     usage: /<command>
-  unlock:
-    usage: /<command>

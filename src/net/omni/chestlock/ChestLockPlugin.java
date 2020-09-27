@@ -1,7 +1,6 @@
 package net.omni.chestlock;
 
 import net.omni.chestlock.commands.LockCommand;
-import net.omni.chestlock.commands.UnlockCommand;
 import net.omni.chestlock.listeners.PlayerListener;
 import net.omni.chestlock.lockedchests.LockedChestsConfig;
 import net.omni.chestlock.lockedchests.LockedChestsManager;
@@ -61,7 +60,6 @@ public class ChestLockPlugin extends JavaPlugin {
 
     private void registerCommands() {
         new LockCommand(this).register();
-        new UnlockCommand(this).register();
     }
 
     private void registerListeners() {
